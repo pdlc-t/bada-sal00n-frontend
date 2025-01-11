@@ -8,6 +8,7 @@ import ClientPage from './components/klient/ClientPage';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import OnasPage from './components/OnasPage'; // Importujemy nowy komponent
+import ListaPracownikow from './components/admin/pracownicy/ListaPracownikow'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/onas" element={<OnasPage />} /> {/* Nowa strona "O aplikacji" */}
+        <Route path="/admin/zarzadzanie-pracownikami" element={<ListaPracownikow />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,43 @@
+/* LandingPage.css */
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    background-image: url('background.jpeg'); /* Zastąp path-to-your-image.jpg odpowiednią ścieżką do obrazu */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+  }
+  
+  .header {
+    margin-top: 20px;
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .login-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+  
+  .footer {
+    margin-bottom: 20px;
+  }
+  

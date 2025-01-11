@@ -13,7 +13,7 @@ const modalStyle = {
   p: 4,
 };
 
-const PracownikSzczegoly = ({ open, onClose, id }) => {
+const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
   const [pracownik, setPracownik] = useState(null);
 
   // Fetch szczegółów pracownika
@@ -25,6 +25,27 @@ const PracownikSzczegoly = ({ open, onClose, id }) => {
         .catch((error) => console.error('Error fetching data:', error));
     }
   }, [id]);
+
+  // Funkcja zwalniająca pracownika
+  const handleZwolnij = () => {
+    fetch('http://localhost:8080/admin/pracownicy/delete', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify( id ),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Zamknij modal i powiadom nadrzędny komponent o usunięciu
+          onClose();
+          onPracownikZwolniony(id);
+        } else {
+          console.error('Error during deleting employee');
+        }
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  };
 
   if (!pracownik) return null; // Jeśli dane nie są jeszcze załadowane
 
@@ -46,6 +67,12 @@ const PracownikSzczegoly = ({ open, onClose, id }) => {
         <Typography>Tryb Pracy: {pracownik.trybPracy}</Typography>
         <Typography>Pensja: {pracownik.pensja}</Typography>
         <Button onClick={onClose} sx={{ mt: 2 }}>Zamknij</Button>
+        <Button 
+          onClick={handleZwolnij} 
+          sx={{ mt: 2, backgroundColor: 'red', color: 'white' }}
+        >
+          Zwolnij
+        </Button>
       </Box>
     </Modal>
   );

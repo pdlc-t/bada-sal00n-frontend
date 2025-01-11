@@ -27,6 +27,11 @@ const PracownicyTable = () => {
     setSelectedPracownikId(null);
   };
 
+  // Funkcja usuwająca pracownika z listy
+  const handlePracownikZwolniony = (id) => {
+    setPracownicy(pracownicy.filter((pracownik) => pracownik.id !== id));
+  };
+
   return (
     <>
       <TableContainer component={Paper}>
@@ -64,6 +69,7 @@ const PracownicyTable = () => {
         open={openModal} 
         onClose={handleCloseModal} 
         id={selectedPracownikId} 
+        onPracownikZwolniony={handlePracownikZwolniony} // Przekazanie funkcji do komponentu
       />
     </>
   );

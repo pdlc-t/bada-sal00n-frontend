@@ -1,56 +1,71 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import PracownikSzczegoly from './PracownikDetails'; // Importujemy komponent
 
 const PracownicyTable = () => {
   const [pracownicy, setPracownicy] = useState([]);
-  
-  // Fetching data from backend
+  const [selectedPracownikId, setSelectedPracownikId] = useState(null); // Przechowywanie wybranego id
+  const [openModal, setOpenModal] = useState(false); // Stan do obsługi widoczności modalu
+
+  // Fetch danych pracowników
   useEffect(() => {
     fetch('http://localhost:8080/admin/pracownicy/list')
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Dane:', data);  // Sprawdzenie struktury danych
-        setPracownicy(data);
-      })
+      .then((data) => setPracownicy(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
-  
-  
-  // Handler for row click
+
+  // Funkcja otwierająca modal
   const handleRowClick = (id) => {
-    console.log('Wybrany ID:', id);
+    setSelectedPracownikId(id);
+    setOpenModal(true);
+  };
+
+  // Funkcja zamykająca modal
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedPracownikId(null);
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="pracownicy table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Imię</TableCell>
-            <TableCell>Nazwisko</TableCell>
-            <TableCell>Stanowisko</TableCell>
-            <TableCell>Tryb Pracy</TableCell>
-            <TableCell>Pensja</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {pracownicy.map((pracownik) => (
-            <TableRow
-              key={pracownik.id}
-              hover
-              onClick={() => handleRowClick(pracownik.id)} // Pass the id to handle click
-              sx={{ cursor: 'pointer' }}
-            >
-              <TableCell>{pracownik.imie}</TableCell>
-              <TableCell>{pracownik.nazwisko}</TableCell>
-              <TableCell>{pracownik.stanowisko}</TableCell>
-              <TableCell>{pracownik.trybPracy}</TableCell>
-              <TableCell>{pracownik.pensja}</TableCell>
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="pracownicy table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Imię</TableCell>
+              <TableCell>Nazwisko</TableCell>
+              <TableCell>Stanowisko</TableCell>
+              <TableCell>Tryb Pracy</TableCell>
+              <TableCell>Pensja</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {pracownicy.map((pracownik) => (
+              <TableRow
+                key={pracownik.id}
+                hover
+                onClick={() => handleRowClick(pracownik.id)} // Po kliknięciu otwieramy modal
+                sx={{ cursor: 'pointer' }}
+              >
+                <TableCell>{pracownik.imie}</TableCell>
+                <TableCell>{pracownik.nazwisko}</TableCell>
+                <TableCell>{pracownik.stanowisko}</TableCell>
+                <TableCell>{pracownik.trybPracy}</TableCell>
+                <TableCell>{pracownik.pensja}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* Wyświetlenie modalu z szczegółami pracownika */}
+      <PracownikSzczegoly 
+        open={openModal} 
+        onClose={handleCloseModal} 
+        id={selectedPracownikId} 
+      />
+    </>
   );
 };
 

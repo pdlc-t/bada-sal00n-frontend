@@ -64,6 +64,7 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
           // Powiadomienie nadrzędnego komponentu o dodaniu pracownika
           onPracownikDodany(formData);
           onClose();
+          window.location.reload();
         } else {
           console.error('Error adding employee');
         }

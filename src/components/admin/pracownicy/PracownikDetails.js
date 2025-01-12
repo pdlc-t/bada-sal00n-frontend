@@ -8,9 +8,20 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
+  bgcolor: '#f9f9f9',
+  border: '2px solid #008080',
   boxShadow: 24,
+  borderRadius: '10px',
   p: 4,
+};
+
+const buttonStyle = {
+  mt: 2,
+  textTransform: 'uppercase',
+  fontWeight: 'bold',
+  '&:hover': {
+    backgroundColor: '#005959',
+  },
 };
 
 const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
@@ -33,7 +44,7 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify( id ),
+      body: JSON.stringify(id),
     })
       .then((response) => {
         if (response.ok) {
@@ -44,7 +55,7 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
           console.error('Error during deleting employee');
         }
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.error('Error during deleting employee:', error));
   };
 
   if (!pracownik) return null; // Jeśli dane nie są jeszcze załadowane
@@ -52,27 +63,55 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
-        <Typography variant="h6" component="h2">
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{
+            textAlign: 'center',
+            color: '#008080',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            mb: 2,
+          }}
+        >
           Szczegóły Pracownika
         </Typography>
-        <Typography>Imię: {pracownik.imie}</Typography>
-        <Typography>Nazwisko: {pracownik.nazwisko}</Typography>
-        <Typography>PESEL: {pracownik.pesel}</Typography>
-        <Typography>Miasto: {pracownik.miasto}</Typography>
-        <Typography>Ulica: {pracownik.ulica}</Typography>
-        <Typography>Kod pocztowy: {pracownik.kodPocztowy}</Typography>
-        <Typography>Nr Budynku: {pracownik.nrBudynku}</Typography>
-        <Typography>Nr Lokalu: {pracownik.nrLokalu}</Typography>
-        <Typography>Stanowisko: {pracownik.stanowisko}</Typography>
-        <Typography>Tryb Pracy: {pracownik.trybPracy}</Typography>
-        <Typography>Pensja: {pracownik.pensja}</Typography>
-        <Button onClick={onClose} sx={{ mt: 2 }}>Zamknij</Button>
-        <Button 
-          onClick={handleZwolnij} 
-          sx={{ mt: 2, backgroundColor: 'red', color: 'white' }}
-        >
-          Zwolnij
-        </Button>
+        <Typography sx={{ mb: 1 }}>Imię: {pracownik.imie}</Typography>
+        <Typography sx={{ mb: 1 }}>Nazwisko: {pracownik.nazwisko}</Typography>
+        <Typography sx={{ mb: 1 }}>PESEL: {pracownik.pesel}</Typography>
+        <Typography sx={{ mb: 1 }}>Miasto: {pracownik.miasto}</Typography>
+        <Typography sx={{ mb: 1 }}>Ulica: {pracownik.ulica}</Typography>
+        <Typography sx={{ mb: 1 }}>Kod pocztowy: {pracownik.kodPocztowy}</Typography>
+        <Typography sx={{ mb: 1 }}>Nr Budynku: {pracownik.nrBudynku}</Typography>
+        <Typography sx={{ mb: 1 }}>Nr Lokalu: {pracownik.nrLokalu}</Typography>
+        <Typography sx={{ mb: 1 }}>Stanowisko: {pracownik.stanowisko}</Typography>
+        <Typography sx={{ mb: 1 }}>Tryb Pracy: {pracownik.trybPracy}</Typography>
+        <Typography sx={{ mb: 2 }}>Pensja: {pracownik.pensja}</Typography>
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            onClick={onClose}
+            variant="contained"
+            sx={{
+              ...buttonStyle,
+              backgroundColor: '#008080',
+              color: '#fff',
+            }}
+          >
+            Zamknij
+          </Button>
+          <Button
+            onClick={handleZwolnij}
+            variant="contained"
+            sx={{
+              ...buttonStyle,
+              backgroundColor: '#ff0000',
+              color: '#fff',
+            }}
+          >
+            Zwolnij
+          </Button>
+        </Box>
       </Box>
     </Modal>
   );

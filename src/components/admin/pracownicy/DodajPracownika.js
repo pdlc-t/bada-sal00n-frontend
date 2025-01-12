@@ -8,13 +8,13 @@ const modalStyle = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  maxHeight: '80vh', // Ustawienie maksymalnej wysokości na 80% ekranu
+  maxHeight: '80vh',
   bgcolor: '#f9f9f9',
   border: '2px solid #008080',
   boxShadow: 24,
   borderRadius: '10px',
   p: 4,
-  overflowY: 'auto', // Włączenie przewijania w pionie
+  overflowY: 'auto',
 };
 
 const buttonStyle = {
@@ -41,7 +41,50 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
     pensja: '',
   });
 
-  // Funkcja do obsługi zmiany wartości w formularzu
+  const [errors, setErrors] = useState({});
+
+  const stanowiskaOpcje = ['menadzer', 'usluger', 'sprzedawca', 'inne'];
+  const trybPracyOpcje = ['pelny etat', 'pol etatu', 'umowa zlecene'];
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors = {};
+    if (!/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(formData.imie)) {
+      newErrors.imie = 'Nieprawidłowy format imienia';
+      valid = false;
+    }
+    if (!/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(formData.nazwisko)) {
+      newErrors.nazwisko = 'Nieprawidłowy format nazwiska';
+      valid = false;
+    }
+    if (!/^\d{11}$/.test(formData.pesel)) {
+      newErrors.pesel = 'PESEL musi składać się z 11 cyfr';
+      valid = false;
+    }
+    if (!/^\d+$/.test(formData.nrBudynku)) {
+      newErrors.nrBudynku = 'Nr budynku musi być liczbą';
+      valid = false;
+    }
+    if (!/^\d*$/.test(formData.nrLokalu)) {
+      newErrors.nrLokalu = 'Nr lokalu musi być liczbą';
+      valid = false;
+    }
+    if (!/^\d{2}-\d{3}$/.test(formData.kodPocztowy)) {
+      newErrors.kodPocztowy = 'Kod pocztowy musi mieć format XX-XXX';
+      valid = false;
+    }
+    if (!stanowiskaOpcje.includes(formData.stanowisko)) {
+      newErrors.stanowisko = `Stanowisko musi być jedną z wartości: ${stanowiskaOpcje.join(', ')}`;
+      valid = false;
+    }
+    if (!trybPracyOpcje.includes(formData.trybPracy)) {
+      newErrors.trybPracy = `Tryb pracy musi być jedną z wartości: ${trybPracyOpcje.join(', ')}`;
+      valid = false;
+    }
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -50,8 +93,11 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
     }));
   };
 
-  // Funkcja do wysyłania danych pracownika
   const handleSubmit = () => {
+    if (!validateForm()) {
+      alert('Formularz zawiera błędy! Popraw dane przed wysłaniem.');
+      return;
+    }
     fetch('http://localhost:8080/admin/pracownicy/add', {
       method: 'POST',
       headers: {
@@ -59,163 +105,56 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
       },
       body: JSON.stringify(formData),
     })
-      .then((response) => {
-        if (response.ok) {
-          // Powiadomienie nadrzędnego komponentu o dodaniu pracownika
-          onPracownikDodany(formData);
-          onClose();
-          window.location.reload();
-        } else {
-          console.error('Error adding employee');
-        }
-      })
-      .catch((error) => console.error('Error adding employee:', error));
+        .then((response) => {
+          if (response.ok) {
+            onPracownikDodany(formData);
+            onClose();
+            window.location.reload();
+          } else {
+            console.error('Error adding employee');
+          }
+        })
+        .catch((error) => console.error('Error adding employee:', error));
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle}>
-        <Typography
-          variant="h6"
-          component="h2"
-          sx={{
-            textAlign: 'center',
-            color: '#008080',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            mb: 2,
-          }}
-        >
-          Dodaj Nowego Pracownika
-        </Typography>
+      <Modal open={open} onClose={onClose}>
+        <Box sx={modalStyle}>
+          <Typography variant="h6" component="h2" sx={{ textAlign: 'center', color: '#008080', fontWeight: 'bold', textTransform: 'uppercase', mb: 2 }}>
+            Dodaj Nowego Pracownika
+          </Typography>
 
-        {/* Formularz */}
-        <TextField
-          label="Imię"
-          variant="outlined"
-          fullWidth
-          name="imie"
-          value={formData.imie}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Nazwisko"
-          variant="outlined"
-          fullWidth
-          name="nazwisko"
-          value={formData.nazwisko}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="PESEL"
-          variant="outlined"
-          fullWidth
-          name="pesel"
-          value={formData.pesel}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Miasto"
-          variant="outlined"
-          fullWidth
-          name="miasto"
-          value={formData.miasto}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Ulica"
-          variant="outlined"
-          fullWidth
-          name="ulica"
-          value={formData.ulica}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Kod Pocztowy"
-          variant="outlined"
-          fullWidth
-          name="kodPocztowy"
-          value={formData.kodPocztowy}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Nr Budynku"
-          variant="outlined"
-          fullWidth
-          name="nrBudynku"
-          value={formData.nrBudynku}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Nr Lokalu"
-          variant="outlined"
-          fullWidth
-          name="nrLokalu"
-          value={formData.nrLokalu}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Stanowisko"
-          variant="outlined"
-          fullWidth
-          name="stanowisko"
-          value={formData.stanowisko}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Tryb Pracy"
-          variant="outlined"
-          fullWidth
-          name="trybPracy"
-          value={formData.trybPracy}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Pensja"
-          variant="outlined"
-          fullWidth
-          name="pensja"
-          value={formData.pensja}
-          onChange={handleInputChange}
-          sx={{ mb: 2 }}
-        />
+          {Object.entries(formData).map(([key, value]) => (
+              <TextField
+                  key={key}
+                  label={
+                    key === 'stanowisko'
+                        ? 'Stanowisko (menadzer/usluger/sprzedawca/inne)'
+                        : key === 'trybPracy'
+                            ? 'Tryb Pracy (pelny etat/pol etatu/umowa zlecene)'
+                            : key.charAt(0).toUpperCase() + key.slice(1)
+                  }
+                  variant="outlined"
+                  fullWidth
+                  name={key}
+                  value={value}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2 }}
+                  error={!!errors[key]}
+                  helperText={errors[key]}
+              />
+          ))}
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button
-            onClick={onClose}
-            variant="contained"
-            sx={{
-              ...buttonStyle,
-              backgroundColor: '#008080',
-              color: '#fff',
-            }}
-          >
-            Anuluj
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            sx={{
-              ...buttonStyle,
-              backgroundColor: '#4caf50',
-              color: '#fff',
-            }}
-          >
-            Zatrudnij
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080', color: '#fff' }}>
+              Anuluj
+            </Button>
+            <Button onClick={handleSubmit} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50', color: '#fff' }}>
+              Zatrudnij
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Modal>
+      </Modal>
   );
 };
 

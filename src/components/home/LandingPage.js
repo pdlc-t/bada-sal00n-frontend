@@ -18,7 +18,7 @@ const LandingPage = () => {
     <div className="landing-page">
       <NavBar /> {/* Dodajemy NavBar na górze strony */}
       <main className="main-content">
-        <h1>Witaj w naszej aplikacji!</h1>
+        <h1>Witaj w naszej Sal00nie!</h1>
         <button className="login-button" onClick={handleAdminLogin}>
           Zaloguj się jako admin
         </button>

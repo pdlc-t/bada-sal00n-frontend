@@ -8,7 +8,7 @@
     background-image: url('background.jpeg'); /* Zastąp path-to-your-image.jpg odpowiednią ścieżką do obrazu */
     background-size: cover;
     background-position: center;
-    color: #fff;
+    color: #000;
   }
   
   .header {
@@ -23,19 +23,19 @@
   }
   
   .login-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.7);
+    padding: 15px 30px; /* Większy odstęp wewnętrzny */
+    font-size: 18px; /* Większa czcionka */
+    color: #000;
+    background-color: #008080;
     border: none;
-    border-radius: 5px;
+    border-radius: 30px; /* Większe zaokrąglenie */
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .login-button:hover {
-    background-color: rgba(0, 0, 0, 0.9);
-  }
+}
+
+.login-button:hover {
+    background-color: #006666; /* Zmiana koloru tła przy najechaniu */
+}
   
   .footer {
     margin-bottom: 20px;

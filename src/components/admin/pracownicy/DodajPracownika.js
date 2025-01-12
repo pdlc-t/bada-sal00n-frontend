@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Modal, TextField } from '@mui/material';
+import { Box, Button, Typography, Modal, TextField, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 
 // Modal stylizacja
 const modalStyle = {
@@ -42,6 +43,7 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState(''); // Stan do komunikatu o sukcesie
 
   const stanowiskaOpcje = ['menadzer', 'usluger', 'sprzedawca', 'inne'];
   const trybPracyOpcje = ['pelny etat', 'pol etatu', 'umowa zlecene'];
@@ -108,8 +110,8 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
         .then((response) => {
           if (response.ok) {
             onPracownikDodany(formData);
+            setSuccessMessage('Pracownik został pomyślnie dodany!'); // Ustawienie komunikatu
             onClose();
-            window.location.reload();
           } else {
             console.error('Error adding employee');
           }
@@ -117,44 +119,65 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
         .catch((error) => console.error('Error adding employee:', error));
   };
 
+  const handleCloseSnackbar = () => {
+    setSuccessMessage(''); // Ukrycie komunikatu
+  };
+
   return (
-      <Modal open={open} onClose={onClose}>
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" sx={{ textAlign: 'center', color: '#008080', fontWeight: 'bold', textTransform: 'uppercase', mb: 2 }}>
-            Dodaj Nowego Pracownika
-          </Typography>
+      <Box>
+        {/* Snackbar do wyświetlenia komunikatu o pomyślnym dodaniu pracownika */}
+        <Snackbar
+            open={!!successMessage}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+        >
+          <MuiAlert
+              onClose={handleCloseSnackbar}
+              severity="success"
+              sx={{ width: '100%' }}
+          >
+            {successMessage}
+          </MuiAlert>
+        </Snackbar>
 
-          {Object.entries(formData).map(([key, value]) => (
-              <TextField
-                  key={key}
-                  label={
-                    key === 'stanowisko'
-                        ? 'Stanowisko (menadzer/usluger/sprzedawca/inne)'
-                        : key === 'trybPracy'
-                            ? 'Tryb Pracy (pelny etat/pol etatu/umowa zlecene)'
-                            : key.charAt(0).toUpperCase() + key.slice(1)
-                  }
-                  variant="outlined"
-                  fullWidth
-                  name={key}
-                  value={value}
-                  onChange={handleInputChange}
-                  sx={{ mb: 2 }}
-                  error={!!errors[key]}
-                  helperText={errors[key]}
-              />
-          ))}
+        <Modal open={open} onClose={onClose}>
+          <Box sx={modalStyle}>
+            <Typography variant="h6" component="h2" sx={{ textAlign: 'center', color: '#008080', fontWeight: 'bold', textTransform: 'uppercase', mb: 2 }}>
+              Dodaj Nowego Pracownika
+            </Typography>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080', color: '#fff' }}>
-              Anuluj
-            </Button>
-            <Button onClick={handleSubmit} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50', color: '#fff' }}>
-              Zatrudnij
-            </Button>
+            {Object.entries(formData).map(([key, value]) => (
+                <TextField
+                    key={key}
+                    label={
+                      key === 'stanowisko'
+                          ? 'Stanowisko (menadzer/usluger/sprzedawca/inne)'
+                          : key === 'trybPracy'
+                              ? 'Tryb Pracy (pelny etat/pol etatu/umowa zlecene)'
+                              : key.charAt(0).toUpperCase() + key.slice(1)
+                    }
+                    variant="outlined"
+                    fullWidth
+                    name={key}
+                    value={value}
+                    onChange={handleInputChange}
+                    sx={{ mb: 2 }}
+                    error={!!errors[key]}
+                    helperText={errors[key]}
+                />
+            ))}
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080', color: '#fff' }}>
+                Anuluj
+              </Button>
+              <Button onClick={handleSubmit} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50', color: '#fff' }}>
+                Zatrudnij
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Box>
   );
 };
 

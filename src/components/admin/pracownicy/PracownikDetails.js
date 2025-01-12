@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, Modal, TextField } from '@mui/material';
+import { Box, Button, Typography, Modal, TextField, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 
 const modalStyle = {
   position: 'absolute',
@@ -29,6 +30,7 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
   const [pracownik, setPracownik] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [updatedData, setUpdatedData] = useState({ stanowisko: '', idPracownika: id });
+  const [successMessage, setSuccessMessage] = useState(''); // Stan do komunikatu o sukcesie
 
   useEffect(() => {
     if (id && open) {
@@ -79,11 +81,12 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ idPracownika: id }),
+      body: JSON.stringify(id),
     })
         .then((response) => {
           if (response.ok) {
             onPracownikZwolniony(id);
+            setSuccessMessage('Pracownik został pomyślnie usunięty!'); // Ustawienie komunikatu
             onClose();
           } else {
             alert('Błąd podczas usuwania pracownika.');
@@ -92,62 +95,83 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
         .catch((error) => console.error('Error during deleting employee:', error));
   };
 
+  const handleCloseSnackbar = () => {
+    setSuccessMessage(''); // Ukrycie komunikatu
+  };
+
   if (!pracownik) return null;
 
   return (
-      <Modal open={open} onClose={onClose}>
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" sx={{ textAlign: 'center', mb: 2 }}>
-            Szczegóły Pracownika
-          </Typography>
+      <Box>
+        {/* Snackbar do wyświetlenia komunikatu o pomyślnym usunięciu */}
+        <Snackbar
+            open={!!successMessage}
+            autoHideDuration={6000}
+            onClose={handleCloseSnackbar}
+        >
+          <MuiAlert
+              onClose={handleCloseSnackbar}
+              severity="success"
+              sx={{ width: '100%' }}
+          >
+            {successMessage}
+          </MuiAlert>
+        </Snackbar>
 
-          {editMode ? (
-              <TextField
-                  label="Stanowisko (menadzer/usluger/sprzedawca/inne)"
-                  variant="outlined"
-                  fullWidth
-                  name="stanowisko"
-                  value={updatedData.stanowisko}
-                  onChange={handleInputChange}
-                  sx={{ mb: 2 }}
-              />
-          ) : (
-              <>
-                <Typography sx={{ mb: 1 }}>Imię: {pracownik.imie}</Typography>
-                <Typography sx={{ mb: 1 }}>Nazwisko: {pracownik.nazwisko}</Typography>
-                <Typography sx={{ mb: 1 }}>PESEL: {pracownik.pesel}</Typography>
-                <Typography sx={{ mb: 1 }}>Miasto: {pracownik.miasto}</Typography>
-                <Typography sx={{ mb: 1 }}>Ulica: {pracownik.ulica}</Typography>
-                <Typography sx={{ mb: 1 }}>Kod pocztowy: {pracownik.kodPocztowy}</Typography>
-                <Typography sx={{ mb: 1 }}>Nr Budynku: {pracownik.nrBudynku}</Typography>
-                <Typography sx={{ mb: 1 }}>Nr Lokalu: {pracownik.nrLokalu}</Typography>
-                <Typography sx={{ mb: 1 }}>Stanowisko: {pracownik.stanowisko}</Typography>
-                <Typography sx={{ mb: 1 }}>Tryb Pracy: {pracownik.trybPracy}</Typography>
-                <Typography sx={{ mb: 2 }}>Pensja: {pracownik.pensja}</Typography>
-              </>
-          )}
+        <Modal open={open} onClose={onClose}>
+          <Box sx={modalStyle}>
+            <Typography variant="h6" component="h2" sx={{ textAlign: 'center', mb: 2 }}>
+              Szczegóły Pracownika
+            </Typography>
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             {editMode ? (
-                <Button onClick={handleUpdate} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50' }}>
-                  Zapisz zmiany
-                </Button>
+                <TextField
+                    label="Stanowisko (menadzer/usluger/sprzedawca/inne)"
+                    variant="outlined"
+                    fullWidth
+                    name="stanowisko"
+                    value={updatedData.stanowisko}
+                    onChange={handleInputChange}
+                    sx={{ mb: 2 }}
+                />
             ) : (
-                <Button onClick={() => setEditMode(true)} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#ffa500' }}>
-                  Zmień stanowisko
-                </Button>
+                <>
+                  <Typography sx={{ mb: 1 }}>Imię: {pracownik.imie}</Typography>
+                  <Typography sx={{ mb: 1 }}>Nazwisko: {pracownik.nazwisko}</Typography>
+                  <Typography sx={{ mb: 1 }}>PESEL: {pracownik.pesel}</Typography>
+                  <Typography sx={{ mb: 1 }}>Miasto: {pracownik.miasto}</Typography>
+                  <Typography sx={{ mb: 1 }}>Ulica: {pracownik.ulica}</Typography>
+                  <Typography sx={{ mb: 1 }}>Kod pocztowy: {pracownik.kodPocztowy}</Typography>
+                  <Typography sx={{ mb: 1 }}>Nr Budynku: {pracownik.nrBudynku}</Typography>
+                  <Typography sx={{ mb: 1 }}>Nr Lokalu: {pracownik.nrLokalu}</Typography>
+                  <Typography sx={{ mb: 1 }}>Stanowisko: {pracownik.stanowisko}</Typography>
+                  <Typography sx={{ mb: 1 }}>Tryb Pracy: {pracownik.trybPracy}</Typography>
+                  <Typography sx={{ mb: 2 }}>Pensja: {pracownik.pensja}</Typography>
+                </>
             )}
 
-            <Button onClick={handleZwolnij} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#ff0000' }}>
-              Zwolnij
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              {editMode ? (
+                  <Button onClick={handleUpdate} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50' }}>
+                    Zapisz zmiany
+                  </Button>
+              ) : (
+                  <Button onClick={() => setEditMode(true)} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#ffa500' }}>
+                    Zmień stanowisko
+                  </Button>
+              )}
 
-            <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080' }}>
-              Zamknij
-            </Button>
+              <Button onClick={handleZwolnij} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#ff0000' }}>
+                Zwolnij
+              </Button>
+
+              <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080' }}>
+                Zamknij
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      </Box>
   );
 };
 

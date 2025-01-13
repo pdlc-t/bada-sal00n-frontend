@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Button, Typography, Modal, TextField, Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 
-// Modal stylizacja
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -27,7 +26,7 @@ const buttonStyle = {
   },
 };
 
-const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
+const DodajPracownikaModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     imie: '',
     nazwisko: '',
@@ -43,35 +42,26 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState(''); // Stan do komunikatu o sukcesie
 
   const stanowiskaOpcje = ['menadzer', 'usluger', 'sprzedawca', 'inne'];
-  const trybPracyOpcje = ['pelny etat', 'pol etatu', 'umowa zlecene'];
+  const trybPracyOpcje = ['pelny etat', 'pol etatu', 'cwierc etatu'];
 
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
-    if (!/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(formData.imie)) {
-      newErrors.imie = 'Nieprawidłowy format imienia';
-      valid = false;
-    }
-    if (!/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(formData.nazwisko)) {
-      newErrors.nazwisko = 'Nieprawidłowy format nazwiska';
-      valid = false;
-    }
-    if (!/^\d{11}$/.test(formData.pesel)) {
+    if (!/\d{11}$/.test(formData.pesel)) {
       newErrors.pesel = 'PESEL musi składać się z 11 cyfr';
       valid = false;
     }
-    if (!/^\d+$/.test(formData.nrBudynku)) {
+    if (!/\d+$/.test(formData.nrBudynku)) {
       newErrors.nrBudynku = 'Nr budynku musi być liczbą';
       valid = false;
     }
-    if (!/^\d*$/.test(formData.nrLokalu)) {
+    if (!/\d*$/.test(formData.nrLokalu)) {
       newErrors.nrLokalu = 'Nr lokalu musi być liczbą';
       valid = false;
     }
-    if (!/^\d{2}-\d{3}$/.test(formData.kodPocztowy)) {
+    if (!/\d{2}-\d{3}$/.test(formData.kodPocztowy)) {
       newErrors.kodPocztowy = 'Kod pocztowy musi mieć format XX-XXX';
       valid = false;
     }
@@ -109,75 +99,55 @@ const DodajPracownikaModal = ({ open, onClose, onPracownikDodany }) => {
     })
         .then((response) => {
           if (response.ok) {
-            onPracownikDodany(formData);
-            setSuccessMessage('Pracownik został pomyślnie dodany!'); // Ustawienie komunikatu
-            onClose();
+            window.location.reload();
           } else {
-            console.error('Error adding employee');
+            alert('Wystąpił błąd podczas dodawania pracownika.');
           }
         })
-        .catch((error) => console.error('Error adding employee:', error));
-  };
-
-  const handleCloseSnackbar = () => {
-    setSuccessMessage(''); // Ukrycie komunikatu
+        .catch((error) => {
+          console.error('Error adding employee:', error);
+          alert('Wystąpił błąd podczas dodawania pracownika.');
+        });
   };
 
   return (
-      <Box>
-        {/* Snackbar do wyświetlenia komunikatu o pomyślnym dodaniu pracownika */}
-        <Snackbar
-            open={!!successMessage}
-            autoHideDuration={6000}
-            onClose={handleCloseSnackbar}
-        >
-          <MuiAlert
-              onClose={handleCloseSnackbar}
-              severity="success"
-              sx={{ width: '100%' }}
-          >
-            {successMessage}
-          </MuiAlert>
-        </Snackbar>
+      <Modal open={open} onClose={onClose}>
+        <Box sx={modalStyle}>
+          <Typography variant="h6" component="h2" sx={{ textAlign: 'center', color: '#008080', fontWeight: 'bold', textTransform: 'uppercase', mb: 2 }}>
+            Dodaj Nowego Pracownika
+          </Typography>
 
-        <Modal open={open} onClose={onClose}>
-          <Box sx={modalStyle}>
-            <Typography variant="h6" component="h2" sx={{ textAlign: 'center', color: '#008080', fontWeight: 'bold', textTransform: 'uppercase', mb: 2 }}>
-              Dodaj Nowego Pracownika
-            </Typography>
+          {Object.entries(formData).map(([key, value]) => (
+              <TextField
+                  key={key}
+                  label={
+                    key === 'stanowisko'
+                        ? 'Stanowisko (menadzer/usluger/sprzedawca/inne)'
+                        : key === 'trybPracy'
+                            ? 'Tryb Pracy (pelny etat/pol etatu/cwierc etatu)'
+                            : key.charAt(0).toUpperCase() + key.slice(1)
+                  }
+                  variant="outlined"
+                  fullWidth
+                  name={key}
+                  value={value}
+                  onChange={handleInputChange}
+                  sx={{ mb: 2 }}
+                  error={!!errors[key]}
+                  helperText={errors[key]}
+              />
+          ))}
 
-            {Object.entries(formData).map(([key, value]) => (
-                <TextField
-                    key={key}
-                    label={
-                      key === 'stanowisko'
-                          ? 'Stanowisko (menadzer/usluger/sprzedawca/inne)'
-                          : key === 'trybPracy'
-                              ? 'Tryb Pracy (pelny etat/pol etatu/umowa zlecene)'
-                              : key.charAt(0).toUpperCase() + key.slice(1)
-                    }
-                    variant="outlined"
-                    fullWidth
-                    name={key}
-                    value={value}
-                    onChange={handleInputChange}
-                    sx={{ mb: 2 }}
-                    error={!!errors[key]}
-                    helperText={errors[key]}
-                />
-            ))}
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080', color: '#fff' }}>
-                Anuluj
-              </Button>
-              <Button onClick={handleSubmit} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50', color: '#fff' }}>
-                Zatrudnij
-              </Button>
-            </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button onClick={onClose} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#008080', color: '#fff' }}>
+              Anuluj
+            </Button>
+            <Button onClick={handleSubmit} variant="contained" sx={{ ...buttonStyle, backgroundColor: '#4caf50', color: '#fff' }}>
+              Zatrudnij
+            </Button>
           </Box>
-        </Modal>
-      </Box>
+        </Box>
+      </Modal>
   );
 };
 

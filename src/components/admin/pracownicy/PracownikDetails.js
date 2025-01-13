@@ -107,7 +107,7 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
               variant="contained"
               sx={{ ...buttonStyle, backgroundColor: '#ffa500' }}
             >
-              Zmień stanowisko
+              Zmień model
             </Button>
 
             <Button

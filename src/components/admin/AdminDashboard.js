@@ -75,7 +75,7 @@ const AdminDashboard = () => {
           </Button>
 
           <Button
-            onClick={() => handleNavigation('/admin/zarzadzanie-oferta')}
+            onClick={() => handleNavigation('/under-construction')}
             sx={{
               width: '100%',
               aspectRatio: '1',
@@ -103,7 +103,7 @@ const AdminDashboard = () => {
           </Button>
 
           <Button
-            onClick={() => handleNavigation('/admin/zarzadzanie-salonem')}
+            onClick={() => handleNavigation('/under-construction')}
             sx={{
               width: '100%',
               aspectRatio: '1',

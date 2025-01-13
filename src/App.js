@@ -8,8 +8,9 @@ import ClientDashboard from './components/klient/ClientDashboard';
 import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import OnasPage from './components/OnasPage'; // Importujemy nowy komponent
-import ListaPracownikow from './components/admin/pracownicy/ListaPracownikow'
-import UnderConstructionPage from './components/UnderConstructionPage'
+import ListaPracownikow from './components/admin/pracownicy/ListaPracownikow';
+import UnderConstructionPage from './components/UnderConstructionPage';
+import BrowseProdukty from './components/klient/BrowseProdukty';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/onas" element={<OnasPage />} /> {/* Nowa strona "O aplikacji" */}
         <Route path="/admin/zarzadzanie-pracownikami" element={<ListaPracownikow />} />
         <Route path="/under-construction" element={<UnderConstructionPage />} />
+        <Route path="/klient/przegladaj-produkty" element={<BrowseProdukty />} />
       </Routes>
     </Router>
   );

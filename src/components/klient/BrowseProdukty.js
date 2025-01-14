@@ -12,10 +12,13 @@ import {
     Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ProduktyDetails from './ProduktyDetails'; // Import komponentu szczegółów
 import background from './images/browse_produkty_background.jpg';
 
-const ProduktyTable = () => {
+const BrowseProdukty = () => {
     const [produkty, setProdukty] = useState([]);
+    const [selectedProductId, setSelectedProductId] = useState(null); // Przechowywanie ID wybranego produktu
+    const [detailsOpen, setDetailsOpen] = useState(false); // Sterowanie otwieraniem okna szczegółów
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,7 +29,13 @@ const ProduktyTable = () => {
     }, []);
 
     const handleRowClick = (id) => {
-        alert(`ID produktu: ${id}`);
+        setSelectedProductId(id);
+        setDetailsOpen(true);
+    };
+
+    const closeDetails = () => {
+        setDetailsOpen(false);
+        setSelectedProductId(null);
     };
 
     return (
@@ -153,8 +162,15 @@ const ProduktyTable = () => {
                     Odśwież Listę
                 </Button>
             </Box>
+
+            {/* Komponent szczegółów produktu */}
+            <ProduktyDetails
+                open={detailsOpen}
+                onClose={closeDetails}
+                id={selectedProductId}
+            />
         </Box>
     );
 };
 
-export default ProduktyTable;
+export default BrowseProdukty;

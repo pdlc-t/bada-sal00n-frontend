@@ -25,6 +25,10 @@ const ProduktyTable = () => {
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
+    const handleRowClick = (id) => {
+        alert(`ID produktu: ${id}`);
+    };
+
     return (
         <Box
             sx={{
@@ -105,22 +109,21 @@ const ProduktyTable = () => {
                         >
                             <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Nazwa</TableCell>
                             <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Cena</TableCell>
-                            <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Opis</TableCell>
                             <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Liczba Sztuk</TableCell>
                             <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Producent</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {produkty.map((produkt, index) => (
+                        {produkty.map((produkt) => (
                             <TableRow
-                                key={index}
+                                key={produkt.id}
                                 sx={{
-                                    '&:hover': { backgroundColor: '#F5F5F5' },
+                                    '&:hover': { backgroundColor: '#F5F5F5', cursor: 'pointer' },
                                 }}
+                                onClick={() => handleRowClick(produkt.id)}
                             >
                                 <TableCell>{produkt.nazwa}</TableCell>
                                 <TableCell>{produkt.cena} zł</TableCell>
-                                <TableCell>{produkt.opis}</TableCell>
                                 <TableCell>{produkt.liczbaSztuk}</TableCell>
                                 <TableCell>{produkt.nazwaProducenta}</TableCell>
                             </TableRow>

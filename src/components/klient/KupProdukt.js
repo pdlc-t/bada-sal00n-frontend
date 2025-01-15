@@ -20,8 +20,14 @@ const KupProdukt = ({ open, onClose, produktId, onPurchaseSuccess }) => {
     const [productDetails, setProductDetails] = useState(null);
 
     useEffect(() => {
+        const authHeader = sessionStorage.getItem('authHeader');
         if (produktId) {
-            fetch(`http://localhost:8080/sales/produkty/${produktId}`)
+            fetch(`http://localhost:8080/sales/produkty/${produktId}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: authHeader ? `${authHeader}` : '', // Jeśli token jest dostępny, dodajemy go
+                },
+            })
                 .then((response) => {
                     if (response.ok) {
                         return response.json();
@@ -35,6 +41,7 @@ const KupProdukt = ({ open, onClose, produktId, onPurchaseSuccess }) => {
     }, [produktId]);
 
     const handlePurchase = () => {
+        const authHeader = sessionStorage.getItem('authHeader');
         if (amount > productDetails.liczbaSztuk) {
             setError('Podana liczba sztuk przekracza dostępny stan magazynowy.');
             return;
@@ -50,6 +57,7 @@ const KupProdukt = ({ open, onClose, produktId, onPurchaseSuccess }) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: authHeader ? `${authHeader}` : '',
             },
             body: JSON.stringify(data),
         })

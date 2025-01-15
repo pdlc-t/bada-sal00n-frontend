@@ -31,8 +31,14 @@ const ProduktyDetails = ({ open, onClose, id }) => {
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
+        const authHeader = sessionStorage.getItem('authHeader');
         if (id && open) {
-            fetch(`http://localhost:8080/sales/produkty/${id}`)
+            fetch(`http://localhost:8080/sales/produkty/${id}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: authHeader ? `${authHeader}` : '', // Jeśli token jest dostępny, dodajemy go
+                },
+            })
                 .then((response) => response.json())
                 .then((data) => setProdukt(data))
                 .catch((error) => console.error('Error fetching data:', error));

@@ -22,7 +22,13 @@ const BrowseProdukty = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:8080/sales/produkty/list')
+        const authHeader = sessionStorage.getItem('authHeader');
+        fetch('http://localhost:8080/sales/produkty/list', {
+            method: 'GET',
+            headers: {
+                Authorization: authHeader ? `${authHeader}` : '', // Jeśli token jest dostępny, dodajemy go
+            },
+        })
             .then((response) => response.json())
             .then((data) => setProdukty(data))
             .catch((error) => console.error('Error fetching data:', error));

@@ -11,6 +11,7 @@ import OnasPage from './components/OnasPage'; // Importujemy nowy komponent
 import ListaPracownikow from './components/admin/pracownicy/ListaPracownikow';
 import UnderConstructionPage from './components/UnderConstructionPage';
 import BrowseProdukty from './components/klient/BrowseProdukty';
+import KlientLogin from './components/klient/KlientLogin';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/admin/zarzadzanie-pracownikami" element={<ListaPracownikow />} />
         <Route path="/under-construction" element={<UnderConstructionPage />} />
         <Route path="/klient/przegladaj-produkty" element={<BrowseProdukty />} />
+        <Route path="/klient/login" element={<KlientLogin />} />
       </Routes>
     </Router>
   );

@@ -11,7 +11,7 @@ const LandingPage = () => {
   };
 
   const handleClientLogin = () => {
-    navigate('/client');
+    navigate('/klient/login');
   };
 
   return (

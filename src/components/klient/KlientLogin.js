@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // Importujemy useNavigate
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();  // Tworzymy instancję navigate
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,11 +28,14 @@ const Login = () => {
         // Logowanie udane
         setMessage("Logowanie powiodło się!");
 
-        // Zapisz nagłówek Authorization w localStorage
-        localStorage.setItem("authHeader", `Basic ${encodedCredentials}`);
+        // Zapisz nagłówek Authorization w sessionStorage
+        sessionStorage.setItem("authHeader", `Basic ${encodedCredentials}`);
 
-        // Zapisz informację o roli użytkownika
-        localStorage.setItem("role", "user");
+        // Zapisz informację o roli użytkownika w sessionStorage
+        sessionStorage.setItem("role", "user");
+
+        // Przekierowanie na stronę klienta
+        navigate("/client");  // Przekierowanie po udanym logowaniu
 
       } else if (response.status === 401) {
         // Nieautoryzowane

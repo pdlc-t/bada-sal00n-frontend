@@ -86,6 +86,7 @@ const DodajPracownikaModal = ({ open, onClose }) => {
   };
 
   const handleSubmit = () => {
+    const authHeader = sessionStorage.getItem('authHeader');
     if (!validateForm()) {
       alert('Formularz zawiera błędy! Popraw dane przed wysłaniem.');
       return;
@@ -94,6 +95,7 @@ const DodajPracownikaModal = ({ open, onClose }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: authHeader ? `${authHeader}` : '',
       },
       body: JSON.stringify(formData),
     })

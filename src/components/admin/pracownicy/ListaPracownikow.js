@@ -25,7 +25,16 @@ const PracownicyTable = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:8080/admin/pracownicy/list')
+        // Pobieramy token z sessionStorage
+        const authHeader = sessionStorage.getItem('authHeader');
+
+        // Wykonujemy zapytanie z odpowiednim nagłówkiem Authorization
+        fetch('http://localhost:8080/admin/pracownicy/list', {
+            method: 'GET',
+            headers: {
+                Authorization: authHeader ? `${authHeader}` : '', // Jeśli token jest dostępny, dodajemy go
+            },
+        })
             .then((response) => response.json())
             .then((data) => setPracownicy(data))
             .catch((error) => console.error('Error fetching data:', error));

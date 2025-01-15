@@ -26,6 +26,8 @@ const buttonStyle = {
 };
 
 const ZmienModelModal = ({ open, onClose, idPracownika }) => {
+
+    const authHeader = sessionStorage.getItem('authHeader');
     const [formData, setFormData] = useState({
         stanowisko: '',
         trybPracy: '',
@@ -72,6 +74,7 @@ const ZmienModelModal = ({ open, onClose, idPracownika }) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: authHeader ? `${authHeader}` : '',
             },
             body: JSON.stringify({ ...formData, idPracownika }),
         })

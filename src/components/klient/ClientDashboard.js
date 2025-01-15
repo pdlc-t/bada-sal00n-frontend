@@ -3,9 +3,6 @@ import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import NavBar from '../home/NavBar'; // Import NavBar
 import background from './images/client_dashboard_background.jpeg';
-// import zarzadzajPracownikami from './images/zarzadzaj_pracownikami.png';
-// import zarzadzajOferta from './images/zarzadzaj_oferta.png';
-// import zarzadzajSalonem from './images/zarzadzaj_salonem.png';
 import przegladajProdukty from './images/przegladaj_produkty.png';
 import przegladajUslugi from './images/przegladaj_uslugi.png';
 import przegladajUslugerow from './images/przegladaj_uslugerow.png';
@@ -15,6 +12,11 @@ const ClientDashboard = () => {
 
   const handleNavigation = (path) => {
     navigate(path); // Navigate to the given path
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear(); // Clear the session storage
+    navigate('/'); // Navigate to the homepage
   };
 
   return (
@@ -133,6 +135,24 @@ const ClientDashboard = () => {
             </Typography>
           </Button>
         </Box>
+
+        {/* Logout Button */}
+        <Button
+          onClick={handleLogout}
+          sx={{
+            position: 'absolute',
+            top: '80px', // Positioned slightly below the NavBar
+            right: '20px',
+            backgroundColor: '#d32f2f', // Red color for logout button
+            color: '#fff',
+            boxShadow: 3,
+            '&:hover': {
+              backgroundColor: '#c2185b',
+            },
+          }}
+        >
+          Wyloguj
+        </Button>
       </Box>
     </Box>
   );

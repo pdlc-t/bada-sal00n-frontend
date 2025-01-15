@@ -31,8 +31,14 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
+    const authHeader = sessionStorage.getItem('authHeader');
     if (id && open) {
-      fetch(`http://localhost:8080/admin/pracownicy/${id}`)
+      fetch(`http://localhost:8080/admin/pracownicy/${id}`, {
+        method: 'GET',
+            headers: {
+                Authorization: authHeader ? `${authHeader}` : '', // Jeśli token jest dostępny, dodajemy go
+            },
+      })
         .then((response) => response.json())
         .then((data) => {
           setPracownik(data);
@@ -42,10 +48,12 @@ const PracownikSzczegoly = ({ open, onClose, id, onPracownikZwolniony }) => {
   }, [id, open]);
 
   const handleZwolnij = () => {
+    const authHeader = sessionStorage.getItem('authHeader');
     fetch('http://localhost:8080/admin/pracownicy/delete', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: authHeader ? `${authHeader}` : '',
       },
       body: JSON.stringify(id),
     })

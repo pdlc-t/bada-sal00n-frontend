@@ -31,11 +31,18 @@ const Login = () => {
         // Zapisz nagłówek Authorization w sessionStorage
         sessionStorage.setItem("authHeader", `Basic ${encodedCredentials}`);
 
-        // Zapisz informację o roli użytkownika w sessionStorage
-        sessionStorage.setItem("role", "user");
-
-        // Przekierowanie na stronę klienta
-        navigate("/client");  // Przekierowanie po udanym logowaniu
+        // Sprawdzenie roli na podstawie username
+        if (username === "user") {
+          // Ustawienie roli 'user' w sessionStorage
+          sessionStorage.setItem("role", "user");
+          // Przekierowanie na stronę klienta
+          navigate("/client");
+        } else if (username === "admin") {
+          // Ustawienie roli 'admin' w sessionStorage
+          sessionStorage.setItem("role", "admin");
+          // Przekierowanie na stronę admina
+          navigate("/admin");
+        }
 
       } else if (response.status === 401) {
         // Nieautoryzowane

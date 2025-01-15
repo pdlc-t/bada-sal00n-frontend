@@ -13,23 +13,24 @@ import UnderConstructionPage from './components/UnderConstructionPage';
 import BrowseProdukty from './components/klient/BrowseProdukty';
 import KlientLogin from './components/klient/KlientLogin';
 import UserRoute from './UserRoute';
+import AdminRoute from './AdminRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
         {/* Route chroniony dla użytkowników z rolą 'user' */}
         <Route path="/client" element={<UserRoute element={<ClientDashboard />} />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/onas" element={<OnasPage />} />
-        <Route path="/admin/zarzadzanie-pracownikami" element={<ListaPracownikow />} />
+        <Route path="/admin/zarzadzanie-pracownikami" element={<AdminRoute element={<ListaPracownikow />} />} />
         <Route path="/under-construction" element={<UnderConstructionPage />} />
         {/* Route chroniony dla użytkowników z rolą 'user' */}
         <Route path="/klient/przegladaj-produkty" element={<UserRoute element={<BrowseProdukty />} />} />
-        <Route path="/klient/login" element={<KlientLogin />} />
+        <Route path="/login" element={<KlientLogin />} />
       </Routes>
     </Router>
   );

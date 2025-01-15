@@ -7,11 +7,11 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleAdminLogin = () => {
-    navigate('/admin');
+    navigate('/login');
   };
 
   const handleClientLogin = () => {
-    navigate('/klient/login');
+    navigate('/login');
   };
 
   return (

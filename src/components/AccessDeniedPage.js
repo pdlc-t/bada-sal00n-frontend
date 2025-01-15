@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import constructionImage from './under_construction.png';
+import accessDeniedIcon from './access_denied_icon.png';
 
-const UnderConstruction = () => {
+const AccessDeniedPage = () => {
   const navigate = useNavigate(); // Hook for navigation
 
   return (
@@ -14,7 +14,7 @@ const UnderConstruction = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#008080', // Light background color
+        backgroundColor: '#36454F', // Light background color
         padding: '16px',
       }}
     >
@@ -26,8 +26,8 @@ const UnderConstruction = () => {
       >
         <Box
           component="img"
-          src={constructionImage}
-          alt="Under Construction"
+          src={accessDeniedIcon}
+          alt="Access Denied"
           sx={{
             width: '300px',
             height: '300px',
@@ -35,22 +35,22 @@ const UnderConstruction = () => {
           }}
           draggable="false"
         />
-        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333' }}>
-          Trwają prace nad stroną
+        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#D70040' }}>
+          Nie przyznano dostępu do tej strony
         </Typography>
       </Box>
 
       {/* Return button in the corner */}
       <Button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/')}
         sx={{
           position: 'fixed',
           top: '16px',
           right: '16px',
-          backgroundColor: '#fbc6cf',
+          backgroundColor: '#D70040',
           color: '#fff',
           '&:hover': {
-            backgroundColor: '#115293',
+            backgroundColor: '#602060',
           },
         }}
         variant="contained"
@@ -61,4 +61,4 @@ const UnderConstruction = () => {
   );
 };
 
-export default UnderConstruction;
+export default AccessDeniedPage;

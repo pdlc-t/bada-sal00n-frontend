@@ -14,6 +14,8 @@ import BrowseProdukty from './components/klient/BrowseProdukty';
 import KlientLogin from './components/klient/KlientLogin';
 import UserRoute from './UserRoute';
 import AdminRoute from './AdminRoute';
+import FourOFourErrorPage from './components/FourOFourErrorPage';
+import AccessDeniedPage from './components/AccessDeniedPage';
 
 function App() {
   return (
@@ -23,14 +25,16 @@ function App() {
         <Route path="/admin" element={<AdminRoute element={<AdminDashboard />} />} />
         {/* Route chroniony dla użytkowników z rolą 'user' */}
         <Route path="/client" element={<UserRoute element={<ClientDashboard />} />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/onas" element={<OnasPage />} />
+        <Route path="/about" element={<UnderConstructionPage />} />
+        <Route path="/contact" element={<UnderConstructionPage />} />
+        <Route path="/onas" element={<UnderConstructionPage />} />
         <Route path="/admin/zarzadzanie-pracownikami" element={<AdminRoute element={<ListaPracownikow />} />} />
         <Route path="/under-construction" element={<UnderConstructionPage />} />
         {/* Route chroniony dla użytkowników z rolą 'user' */}
         <Route path="/klient/przegladaj-produkty" element={<UserRoute element={<BrowseProdukty />} />} />
         <Route path="/login" element={<KlientLogin />} />
+        <Route path="/access-denied" element={<AccessDeniedPage />} />
+        <Route path="*" element={<FourOFourErrorPage />} />
       </Routes>
     </Router>
   );

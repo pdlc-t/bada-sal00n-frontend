@@ -27,7 +27,7 @@ const LandingPage = () => {
         </button>
       </main>
       <footer className="footer">
-        <p>© 2025 Twoja Aplikacja. Wszystkie prawa zastrzeżone.</p>
+        <p>©BADA Big Data Development</p>
       </footer>
     </div>
   );

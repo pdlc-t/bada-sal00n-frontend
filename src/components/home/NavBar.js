@@ -13,15 +13,19 @@ const NavBar = () => {
                 }}
             >
                 <Typography
-                    variant="h6"
-                    sx={{
-                        color: '#000',
-                        fontWeight: 600,
-                        fontSize: '1.25rem',
-                    }}
-                >
-                    Sal00n
-                </Typography>
+    variant="h6"
+    sx={{
+        color: '#008080', // Użycie koloru przewodniego dla lepszej widoczności
+        fontWeight: 700, // Zwiększona grubość
+        fontSize: '1.5rem', // Większy rozmiar czcionki
+        textTransform: 'uppercase', // Wielkie litery dla wyróżnienia
+        textShadow: '1px 1px 2px rgba(0, 0, 0, 0.2)', // Subtelny cień dla kontrastu
+        letterSpacing: '0.1rem', // Odstępy między literami dla elegancji
+    }}
+>
+    Sal00n
+</Typography>
+
 
                 <Box
                     sx={{

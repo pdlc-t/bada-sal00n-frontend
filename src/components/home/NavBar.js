@@ -87,7 +87,7 @@ const NavBar = () => {
                             borderRadius: 5,
                             padding: '10px 20px',
                             '&:hover': {
-                                backgroundColor: '#005A9E',
+                                backgroundColor: '#FBC6FF',
                                 boxShadow: 5,
                             },
                         }}
@@ -107,7 +107,7 @@ const NavBar = () => {
                             borderRadius: 5,
                             padding: '10px 20px',
                             '&:hover': {
-                                backgroundColor: '#005A9E',
+                                backgroundColor: '#FBC6FF',
                                 boxShadow: 5,
                             },
                         }}

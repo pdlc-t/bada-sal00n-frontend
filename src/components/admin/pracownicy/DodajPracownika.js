@@ -88,7 +88,7 @@ const DodajPracownikaModal = ({ open, onClose }) => {
   const handleSubmit = () => {
     const authHeader = sessionStorage.getItem('authHeader');
     if (!validateForm()) {
-      alert('Formularz zawiera błędy! Popraw dane przed wysłaniem.');
+      
       return;
     }
     fetch('http://localhost:8080/admin/pracownicy/add', {

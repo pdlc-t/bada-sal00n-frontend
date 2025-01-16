@@ -67,7 +67,6 @@ const ZmienModelModal = ({ open, onClose, idPracownika }) => {
 
     const handleSubmit = () => {
         if (!validateForm()) {
-            alert('Formularz zawiera błędy! Popraw dane przed wysłaniem.');
             return;
         }
         fetch('http://localhost:8080/admin/pracownicy/update_model', {

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import NavBar from "../home/NavBar"; // Import komponentu NavBar
+import Background from "../../css/background.jpeg";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -47,67 +49,78 @@ const Login = () => {
   return (
     <Box
       sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 400,
-        bgcolor: "#f9f9f9",
-        border: "2px solid #008080",
-        boxShadow: 24,
-        borderRadius: "10px",
-        p: 4,
+        minHeight: "100vh", // Wysokość pełnego ekranu
+        backgroundImage: `url(${Background})`, // Link do obrazu
+        backgroundSize: "cover", // Dopasowanie obrazu do kontenera
+        backgroundPosition: "center", // Wyśrodkowanie obrazu
+        backgroundRepeat: "no-repeat", // Brak powtarzania obrazu
       }}
     >
-      <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
-        Logowanie
-      </Typography>
-
-      <form onSubmit={handleLogin}>
-        <TextField
-          label="Nazwa użytkownika"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          fullWidth
-          required
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Hasło"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          required
-          sx={{ mb: 2 }}
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{
-            backgroundColor: "#008080",
-            color: "#fff",
-            textTransform: "uppercase",
-            fontWeight: "bold",
-            '&:hover': { backgroundColor: "#005959" },
-          }}
-        >
-          Zaloguj się
-        </Button>
-      </form>
-
-      {message && (
-        <Typography
-          sx={{
-            mt: 2,
-            color: message.includes("powiodło") ? "green" : "red",
-            textAlign: "center",
-          }}
-        >
-          {message}
+      <NavBar /> {/* Pasek nawigacyjny */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 400,
+          bgcolor: "rgba(255, 255, 255, 0.9)", // Półprzezroczyste tło dla formularza
+          border: "2px solid #008080",
+          boxShadow: 24,
+          borderRadius: "10px",
+          p: 4,
+        }}
+      >
+        <Typography variant="h6" sx={{ textAlign: "center", mb: 2 }}>
+          Logowanie
         </Typography>
-      )}
+
+        <form onSubmit={handleLogin}>
+          <TextField
+            label="Nazwa użytkownika"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            fullWidth
+            required
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Hasło"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            sx={{ mb: 2 }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: "#008080",
+              color: "#fff",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              "&:hover": { backgroundColor: "#005959" },
+            }}
+          >
+            Zaloguj się
+          </Button>
+        </form>
+
+        {message && (
+          <Typography
+            sx={{
+              mt: 2,
+              color: message.includes("powiodło") ? "green" : "red",
+              textAlign: "center",
+            }}
+          >
+            {message}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
